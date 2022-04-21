@@ -95,7 +95,7 @@ def specialbipartitions(h, n):
 # [DoubleStruckCapitalN]^n such that | \[Mu] | =  d
 def multiindex(n, d):
     a = [range(0, d+1)] * n
-    return list(vector for vector in list(itertools.product(*a)) if LA.linalg.norm(vector, ord=None) <= d)
+    return list(vector for vector in list(itertools.product(*a)) if LA.linalg.norm(vector, ord=1) <= d)
 
 
 
