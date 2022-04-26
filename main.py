@@ -1,3 +1,4 @@
+import time
 from sympy import *
 from sympy.concrete.delta import _simplify_delta
 # from scipy.special import factorial2
@@ -242,12 +243,31 @@ def kontVolume(g, n):
 
 
 
+def amp(g, n):
+    print(f"The number of partitions are {len(multiindex(n, dim(g, n)))}")
+    print(multiindex(n, dim(g, n)))
+    fgn_list = []
+    for k in multiindex(n, dim(g, n)):
+        k = list(k)
+        #k = np.array(k)
+        print(k)
+        #if f(awk, bwk, cwk, dwk, g, n,  k) !=0 :
+        fgn = f(awk, bwk, cwk, dwk, g, n,  k)
+        fgn_list.append(fgn)
+    print(fgn_list)
+    
+    
 
 
 
 
+    
 
-kontVolume(0, 3)
-kontVolume(1, 1)
-kontVolume(0, 4)
-kontVolume(1, 2)
+start_time = time.time()
+amp(2,2)
+print("--- %s seconds ---" % (time.time() - start_time))   
+
+#kontVolume(0, 3)
+#kontVolume(1, 1)
+#kontVolume(0, 4)
+#kontVolume(1, 2)
