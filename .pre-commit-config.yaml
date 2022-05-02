@@ -28,3 +28,5 @@ repos:
 
 ci:
     autoupdate_schedule: monthly
+
+exclude: ".*\\.nb"
