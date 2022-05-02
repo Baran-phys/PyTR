@@ -1,9 +1,6 @@
 import time
-from sympy import *
-from sympy.concrete.delta import _simplify_delta
-# from scipy.special import factorial2
+from sympy import KroneckerDelta, factorial2, factorial
 from sympy.abc import x, y, s
-from sympy.concrete.delta import _simplify_delta
 from sympy import zeta
 import itertools
 from numpy import linalg as LA
