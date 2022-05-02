@@ -1,6 +1,6 @@
 import time
 from sympy import KroneckerDelta, factorial2, factorial
-from sympy.abc import x, y, s
+from sympy.abc import s
 from sympy import zeta
 import itertools
 from numpy import linalg as LA
@@ -71,7 +71,7 @@ def dmv(k):
     return 1 / (2 * s**2) * zeta(2) * KroneckerDelta(k, 0) + 1 / 8 * KroneckerDelta(k, 1)
 
 
-# Intermidiate functions
+# Intermediate functions
 
 
 # given a natural number n, this function return a list, whose element are the partitions of {2, ... , n}
@@ -193,7 +193,7 @@ def fgn(a, b, c, d, g, n, k):
                         kpart2 = [k[i - 1] for i in part[1]]
 
                         # print("BiPart Prt 1:   "+str(len(part[1])))
-                        # print("Orginal K->: " + str(k))
+                        # print("Original K->: " + str(k))
                         # print("Selected k: "+str([k[i-1] for i in part[1]]))
                         # print("Modified K->: "+str([bb] + [k[i-1] for i in part[1]]))
                         r321 += f(a, b, c, d, hh, 1 + len(kpart1), [aa] + kpart1) * f(
@@ -238,7 +238,6 @@ def get_sub(x):
 
 
 def kontVolume(g, n):
-    s = 0
     # print("multiindex")
     # print(multiindex(n, dim(g, n)))
     coefList = []
