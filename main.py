@@ -1,15 +1,37 @@
 import time
-from sympy import KroneckerDelta, factorial2, factorial
+
+import numba
+
+# from sympy import factorial2 as _factorial2
 from sympy.abc import s
-from sympy import zeta
+from scipy.special import zeta
 import itertools
 from numpy import linalg as LA
 from fractions import Fraction
+import numpy as np
+import functools
+from scipy.special import factorial2 as _factorial2
+
+factorial = np.math.factorial
+factorial2 = functools.partial(_factorial2, exact=True)
+
+# def factorial2(x: int) -> int:
+#     return _factorial2(x)  # type: ignore
+
+
+@numba.jit(nopython=True)
+def KroneckerDelta(x, y):
+    if x == y:
+        return 1.0
+    return 0.0
 
 
 # Initial data for Kontsevich volumes
+@numba.jit(nopython=True)
 def awk(i, j, k):
-    return KroneckerDelta(i, 0) * KroneckerDelta(j, 0) * KroneckerDelta(k, 0)
+    if 0 == i == j == k:
+        return 1
+    return 0
 
 
 def bwk(k, a, b):
@@ -25,21 +47,29 @@ def cwk(k, a, b):
     return KroneckerDelta(k, a + b + 2) * factorial2(2 * a + 1) * factorial2(2 * b + 1) / factorial2(2 * k + 1)
 
 
+@numba.jit(nopython=True)
 def dwk(k):
-    return 1 / 24 * KroneckerDelta(k, 1)
+    if k == 1:
+        return 1 / 24.0
+    return 0.0
 
 
 # Initial data for multicurve count
+@numba.jit()
 def amv(i, j, k):
-    return KroneckerDelta(i, 0) * KroneckerDelta(j, 0) * KroneckerDelta(k, 0)
+    if 0 == i == j == k:
+        return 1
+    return 0
 
 
+@numba.jit(nopython=False)
 def bmv(k, a, b):
     return (2 * a + 1) * KroneckerDelta(k + a, b + 1) + KroneckerDelta(k, 0) * KroneckerDelta(a, 0) * zeta(
         2 * b + 2
     ) / s ** (2 * b + 2)
 
 
+@numba.jit()
 def cmv(k, a, b):
     p1 = 0
     if b - k + 1 >= 0:
@@ -67,6 +97,7 @@ def cmv(k, a, b):
     )
 
 
+@numba.jit()
 def dmv(k):
     return 1 / (2 * s**2) * zeta(2) * KroneckerDelta(k, 0) + 1 / 8 * KroneckerDelta(k, 1)
 
@@ -116,6 +147,7 @@ def noduplicate(myList):
     return sorted(set(myList))
 
 
+@numba.jit(nopython=True)
 def dim(g, n):
     return 3 * g - 3 + n
 
