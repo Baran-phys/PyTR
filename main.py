@@ -105,30 +105,23 @@ def dmv(k):
 # Intermediate functions
 
 
-# given a natural number n, this function return a list, whose element are the partitions of {2, ... , n}
-def partition(collection):
-    if len(collection) == 1:
-        yield [collection]
-        return
 
-    first = collection[:1]
-    for smaller in partition(collection[1:]):
-        # insert `first` in each of the subpartition's subsets
-        for n, subset in enumerate(smaller):
-            yield smaller[:n] + [first + subset] + smaller[n + 1 :]
-        # put `first` in its own subset
-        yield [first] + smaller
+# given a natural number n, this function return a list, whose element are the partitions of {2, ... , n}
+def partition(lst):
+    import more_itertools as mit
+    return [part for k in range(1, len(lst) + 1) for part in mit.set_partitions(lst, k)]
 
 
 # given a natural number n, this function return a list, whose element are the partitions of {2, ... , n}
-# of the form {Subscript[J,  1], Subscript[J, 2]}, with Subscript[J, i] nonempty
+# of the form {J_1, J_2}, with J_i nonempty
 def bipartitions(n):
     collection = list(range(2, n + 1))
-    return list(elem for elem in partition(collection) if len(elem) == 2)
+    #print(collection)
+    return list(sorted(elem) for elem in partition(collection) if len(elem) == 2)
 
 
 # given natural numbers h and n, this function return a list, whose element are the partitions of {2, ..., n} of
-# the form {Subscript[J, 1], Subscript[J, 2]}, with Subscript[J, 1] non - empty if h\[MediumSpace]==\[MediumSpace]0
+# the form {J_1, J_2}, with J_i nonempty if h=0.
 def specialbipartitions(h, n):
     if h > 0:
         return bipartitions(n) + [[[], list(range(2, n))]]
@@ -240,9 +233,10 @@ def fgn(a, b, c, d, g, n, k):
                     for part in parts:
                         kpart1 = [k[i - 1] for i in part[0]]
                         kpart2 = [k[i - 1] for i in part[1]]
-                        r322 += f(a, b, c, d, hh, 1 + len(kpart2), [aa] + [k[i - 1] for i in kpart2]) * f(
-                            a, b, c, d, g - hh, 1 + len(kpart1), [bb] + [k[i - 1] for i in kpart1]
+                        r322 += f(a, b, c, d, hh, 1 + len(kpart2), [aa] + kpart2) * f(
+                            a, b, c, d, g - hh, 1 + len(kpart1), [bb] + kpart1
                         )
+                        
                 r32 += r322
 
             else:
