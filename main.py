@@ -11,6 +11,7 @@ from fractions import Fraction
 import numpy as np
 import functools
 from scipy.special import factorial2 as _factorial2
+from functools import lru_cache
 
 factorial = np.math.factorial
 factorial2 = functools.partial(_factorial2, exact=True)
@@ -147,6 +148,7 @@ def dim(g, n):
 
 # **********************************************************************************************************************
 # Topological recursion
+@lru_cache(maxsize=None)  # Unlimited cache
 def f(a, b, c, d, g, n, k):
     if (g == 0 and n == 1) or (g == 0 and n == 2) or g < 0 or n == 0:
         # print("f1: ")
